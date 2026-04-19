@@ -965,6 +965,24 @@ textarea {
   line-height: 1.55;
 }
 
+.explanation__ai {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(108, 92, 231, 0.4);
+}
+
+.explanation__ai-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #00cec9;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .quiz-actions {
   display: flex;
   gap: 10px;

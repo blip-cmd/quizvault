@@ -13,10 +13,14 @@
     answers: [],
     explanationVisible: [],
     shuffleQuestions: JSON.parse(localStorage.getItem('qv_shuffle') || 'false'),
+    shuffleAnswers: JSON.parse(localStorage.getItem('qv_shuffleAnswers') || 'false'),
     showExplanation: JSON.parse(localStorage.getItem('qv_showExplanation') || 'true'),
     theme: localStorage.getItem('qv_theme') || 'dark',
     showJumper: false,
     view: 'home',
+    aiApiKey: localStorage.getItem('qv_aiApiKey') || '',
+    customAIPrompt: localStorage.getItem('qv_customAIPrompt') || "Provide a brief, deeper explanation for the following question from the subject '{subject}'. The user chose an incorrect answer or wants more detail. Question: '{question}'",
+    aiExplanations: {} // Cache: { questionIndex: HTML }
   };
 
   // ==================== Theme ====================
@@ -302,10 +306,27 @@
       const isCorrect = answered === q.correctIndex;
       const isVisible = !isCorrect || state.explanationVisible[state.currentIndex];
       if (isVisible) {
+        
+        let deepExplanationHtml = '';
+        const cachedAI = state.aiExplanations[state.currentIndex];
+        if (cachedAI) {
+          deepExplanationHtml = `
+            <div class="explanation__ai">
+              <div class="explanation__ai-label">🤖 AI Deep Dive</div>
+              <div class="explanation__text">${cachedAI}</div>
+            </div>`;
+        } else {
+          deepExplanationHtml = `
+            <div style="margin-top:12px;text-align:right;">
+              <button class="btn btn--secondary" style="font-size:0.75rem;padding:6px 12px;" onclick="QuizVault.fetchAIExplanation(this)" id="btn-explain-deeper">🤖 Explain Deeper</button>
+            </div>`;
+        }
+
         explanationHtml = `
           <div class="explanation">
             <div class="explanation__label">💡 Explanation</div>
             <div class="explanation__text">${escapeHtml(q.explanation)}</div>
+            ${deepExplanationHtml}
           </div>
         `;
       } else {
@@ -610,11 +631,34 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
           </div>
           <div class="settings-item">
             <div class="settings-item__info">
+              <span class="settings-item__icon">🔀</span>
+              <span class="settings-item__label">Shuffle Answer Options</span>
+            </div>
+            <button class="toggle ${state.shuffleAnswers ? 'active' : ''}" 
+                    onclick="QuizVault.toggleShuffleAnswers()" id="toggle-shuffle-answers"></button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item__info">
               <span class="settings-item__icon">💡</span>
               <span class="settings-item__label">Show Explanations</span>
             </div>
             <button class="toggle ${state.showExplanation ? 'active' : ''}" 
                     onclick="QuizVault.toggleExplanation()" id="toggle-explanation"></button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="section-title">AI Integration (Gemini)</div>
+          <div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px;">
+            <div>
+              <label class="form-label" for="api-key-input">Gemini API Key (Stored Locally)</label>
+              <input type="text" id="api-key-input" placeholder="AIzaSy..." value="${escapeHtml(state.aiApiKey)}" onchange="QuizVault.updateApiKey(this.value)" />
+            </div>
+            <div>
+              <label class="form-label" for="ai-prompt-input">Default Prompt Template</label>
+              <textarea id="ai-prompt-input" style="min-height:80px;font-family:var(--font);" onchange="QuizVault.updateAIPrompt(this.value)">${escapeHtml(state.customAIPrompt)}</textarea>
+              <p style="font-size:0.7rem;color:var(--text-muted);margin-top:6px;">Variables: <code>{subject}</code>, <code>{question}</code></p>
+            </div>
           </div>
         </div>
 
@@ -638,8 +682,9 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
         </div>
 
         <div style="text-align:center;padding:24px 0;">
-          <p style="font-size:0.75rem;color:var(--text-muted);">QuizVault v1.1 — Built for learning on the go.</p>
+          <p style="font-size:0.75rem;color:var(--text-muted);">QuizVault v1.2 — Built for learning on the go.</p>
           <p style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Works 100% offline after first visit.</p>
+          <p style="font-size:0.72rem;color:var(--text-muted);margin-top:10px;">Copyright &copy; 2026 Blip. All rights reserved.</p>
         </div>
       </div>
     `;
@@ -743,13 +788,30 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     const quiz = state.quizzes.find(q => q.id === id);
     if (!quiz) return;
 
+    let preppedQuestions = [...quiz.questions];
+    if (state.shuffleQuestions) preppedQuestions = shuffleArray(preppedQuestions);
+
+    // Map options to handle correct answer index mapping 
+    preppedQuestions = preppedQuestions.map(q => {
+      let mappedOptions = q.options.map((opt, idx) => ({ originalIndex: idx, text: opt }));
+      if (state.shuffleAnswers) {
+        mappedOptions = shuffleArray(mappedOptions);
+      }
+      return { 
+        ...q, 
+        options: mappedOptions.map(m => m.text), // Text for rendering
+        correctIndex: mappedOptions.findIndex(o => o.originalIndex === q.correctIndex) // Overwrite with new mapped Index
+      };
+    });
+
     state.currentQuiz = {
       ...quiz,
-      questions: state.shuffleQuestions ? shuffleArray(quiz.questions) : [...quiz.questions],
+      questions: preppedQuestions,
     };
     state.currentIndex = 0;
-    state.answers = new Array(quiz.questions.length).fill(null);
-    state.explanationVisible = new Array(quiz.questions.length).fill(false);
+    state.answers = new Array(preppedQuestions.length).fill(null);
+    state.explanationVisible = new Array(preppedQuestions.length).fill(false);
+    state.aiExplanations = {};
     state.showJumper = false;
     saveProgress();
     navigateTo('quiz');
@@ -816,6 +878,24 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     state.shuffleQuestions = !state.shuffleQuestions;
     localStorage.setItem('qv_shuffle', JSON.stringify(state.shuffleQuestions));
     render();
+  }
+
+  function toggleShuffleAnswers() {
+    state.shuffleAnswers = !state.shuffleAnswers;
+    localStorage.setItem('qv_shuffleAnswers', JSON.stringify(state.shuffleAnswers));
+    render();
+  }
+
+  function updateApiKey(val) {
+    state.aiApiKey = val.trim();
+    localStorage.setItem('qv_aiApiKey', state.aiApiKey);
+    showToast('API Key saved securely.', 'success');
+  }
+
+  function updateAIPrompt(val) {
+    state.customAIPrompt = val;
+    localStorage.setItem('qv_customAIPrompt', state.customAIPrompt);
+    showToast('Prompt template updated.', 'success');
   }
 
   function toggleExplanation() {
@@ -953,6 +1033,48 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     }
   });
 
+  // ==================== AI Actions ====================
+  async function fetchAIExplanation(btn) {
+    if (!state.aiApiKey) return showToast('Please add your Gemini API key in Settings first.', 'error');
+    
+    btn.disabled = true;
+    btn.textContent = '🤖 Thinking...';
+    
+    const quiz = state.currentQuiz;
+    const q = quiz.questions[state.currentIndex];
+    const promptStr = state.customAIPrompt
+      .replace('{subject}', quiz.title)
+      .replace('{question}', q.question);
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${state.aiApiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptStr }] }]
+        })
+      });
+
+      if (!response.ok) throw new Error('API Request Failed');
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+      
+      // Parse basic markdown strictly for the cached result
+      const parsedText = escapeHtml(text)
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n\n/g, '<br><br>');
+        
+      state.aiExplanations[state.currentIndex] = parsedText;
+      render();
+    } catch (e) {
+      console.error(e);
+      showToast('Failed to reach AI. Check API Key or connectivity.', 'error');
+      btn.disabled = false;
+      btn.textContent = '🤖 Explain Deeper';
+    }
+  }
+
   // ==================== Explanation Toggle ====================
   function toggleExplanationVisible() {
     state.explanationVisible[state.currentIndex] = true;
@@ -976,6 +1098,10 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     exitQuiz,
     deleteQuiz,
     toggleShuffle,
+    toggleShuffleAnswers,
+    updateApiKey,
+    updateAIPrompt,
+    fetchAIExplanation,
     toggleExplanation,
     toggleExplanationVisible,
     toggleTheme,

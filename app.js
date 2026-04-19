@@ -11,11 +11,56 @@
     currentQuiz: null,
     currentIndex: 0,
     answers: [],
-    explanationVisible: [], // per-question toggle for "show explanation" button
+    explanationVisible: [],
     shuffleQuestions: JSON.parse(localStorage.getItem('qv_shuffle') || 'false'),
     showExplanation: JSON.parse(localStorage.getItem('qv_showExplanation') || 'true'),
-    view: 'home', // home, quiz, results, prompts, settings
+    theme: localStorage.getItem('qv_theme') || 'dark',
+    showJumper: false,
+    view: 'home',
   };
+
+  // ==================== Theme ====================
+  function applyTheme() {
+    document.documentElement.setAttribute('data-theme', state.theme);
+  }
+  function toggleTheme() {
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('qv_theme', state.theme);
+    applyTheme();
+    render();
+  }
+  applyTheme();
+
+  // ==================== Progress Persistence ====================
+  function saveProgress() {
+    if (!state.currentQuiz) { localStorage.removeItem('qv_progress'); return; }
+    localStorage.setItem('qv_progress', JSON.stringify({
+      quizId: state.currentQuiz.id,
+      currentIndex: state.currentIndex,
+      answers: state.answers,
+      explanationVisible: state.explanationVisible,
+      questionOrder: state.currentQuiz.questions.map(q => q.question),
+    }));
+  }
+  function loadProgress() {
+    const saved = localStorage.getItem('qv_progress');
+    if (!saved) return false;
+    try {
+      const p = JSON.parse(saved);
+      const quiz = state.quizzes.find(q => q.id === p.quizId);
+      if (!quiz) { localStorage.removeItem('qv_progress'); return false; }
+      // Restore quiz with saved question order
+      const orderedQuestions = p.questionOrder.map(qText =>
+        quiz.questions.find(q => q.question === qText)
+      ).filter(Boolean);
+      if (orderedQuestions.length !== quiz.questions.length) { localStorage.removeItem('qv_progress'); return false; }
+      state.currentQuiz = { ...quiz, questions: orderedQuestions };
+      state.currentIndex = p.currentIndex;
+      state.answers = p.answers;
+      state.explanationVisible = p.explanationVisible || new Array(quiz.questions.length).fill(false);
+      return true;
+    } catch { localStorage.removeItem('qv_progress'); return false; }
+  }
 
   // ==================== Preload Built-in Quiz ====================
   const BUILTIN_QUIZ_ID = 'dcit405-mock2-builtin';
@@ -66,9 +111,34 @@
 
   // ==================== Service Worker ====================
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then(() => {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
       console.log('Service worker registered');
+      // Check for updates periodically
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+          }
+        });
+      });
     }).catch(err => console.log('SW registration failed:', err));
+  }
+
+  function showUpdateBanner() {
+    const existing = document.getElementById('update-banner');
+    if (existing) return;
+    const banner = document.createElement('div');
+    banner.id = 'update-banner';
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+      <span>🔄 A new version is available.</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn--primary" style="padding:8px 14px;font-size:0.78rem;" onclick="location.reload()">Refresh</button>
+        <button class="btn btn--secondary" style="padding:8px 14px;font-size:0.78rem;" onclick="this.closest('.update-banner').remove()">Later</button>
+      </div>
+    `;
+    document.body.prepend(banner);
   }
 
   // ==================== Utility ====================
@@ -248,6 +318,28 @@
     }
 
     const isLast = state.currentIndex >= total - 1;
+    const answeredCount = state.answers.filter(a => a != null).length;
+
+    // Question jumper grid
+    let jumperHtml = '';
+    if (state.showJumper) {
+      const dots = quiz.questions.map((_, i) => {
+        let cls = 'jumper__dot';
+        if (i === state.currentIndex) cls += ' jumper__dot--current';
+        else if (state.answers[i] != null && state.answers[i] === quiz.questions[i].correctIndex) cls += ' jumper__dot--correct';
+        else if (state.answers[i] != null) cls += ' jumper__dot--wrong';
+        return `<button class="${cls}" onclick="QuizVault.jumpTo(${i})">${i + 1}</button>`;
+      }).join('');
+      jumperHtml = `
+        <div class="jumper">
+          <div class="jumper__header">
+            <span class="jumper__title">Jump to Question</span>
+            <span style="font-size:0.75rem;color:var(--text-secondary);">${answeredCount}/${total} answered</span>
+          </div>
+          <div class="jumper__grid">${dots}</div>
+        </div>
+      `;
+    }
 
     app.innerHTML = `
       <div class="view active" id="view-quiz">
@@ -255,9 +347,12 @@
           <button class="quiz-header__back" onclick="QuizVault.exitQuiz()" title="Exit quiz">←</button>
           <div class="quiz-header__info">
             <div class="quiz-header__title">${escapeHtml(quiz.title)}</div>
-            <div class="quiz-header__progress-text">${state.currentIndex + 1} of ${total}</div>
+            <div class="quiz-header__progress-text">${state.currentIndex + 1} of ${total} · ${answeredCount} answered</div>
           </div>
+          <button class="btn-icon" onclick="QuizVault.toggleJumper()" title="Jump to question" id="btn-jumper" style="font-size:0.85rem;">#</button>
         </div>
+
+        ${jumperHtml}
 
         <div class="progress-bar">
           <div class="progress-bar__fill" style="width: ${progress}%"></div>
@@ -492,6 +587,18 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
         <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:20px;">⚙️ Settings</h2>
 
         <div class="settings-group">
+          <div class="section-title">Appearance</div>
+          <div class="settings-item">
+            <div class="settings-item__info">
+              <span class="settings-item__icon">${state.theme === 'dark' ? '🌙' : '☀️'}</span>
+              <span class="settings-item__label">${state.theme === 'dark' ? 'Dark' : 'Light'} Theme</span>
+            </div>
+            <button class="toggle ${state.theme === 'light' ? 'active' : ''}" 
+                    onclick="QuizVault.toggleTheme()" id="toggle-theme"></button>
+          </div>
+        </div>
+
+        <div class="settings-group">
           <div class="section-title">Quiz Behavior</div>
           <div class="settings-item">
             <div class="settings-item__info">
@@ -531,7 +638,7 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
         </div>
 
         <div style="text-align:center;padding:24px 0;">
-          <p style="font-size:0.75rem;color:var(--text-muted);">QuizVault v1.0 — Built for learning on the go.</p>
+          <p style="font-size:0.75rem;color:var(--text-muted);">QuizVault v1.1 — Built for learning on the go.</p>
           <p style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Works 100% offline after first visit.</p>
         </div>
       </div>
@@ -643,23 +750,43 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     state.currentIndex = 0;
     state.answers = new Array(quiz.questions.length).fill(null);
     state.explanationVisible = new Array(quiz.questions.length).fill(false);
+    state.showJumper = false;
+    saveProgress();
     navigateTo('quiz');
   }
 
   function answer(optionIndex) {
     state.answers[state.currentIndex] = optionIndex;
+    saveProgress();
     render();
   }
 
   function next() {
     if (state.currentIndex < state.currentQuiz.questions.length - 1) {
       state.currentIndex++;
+      state.showJumper = false;
+      saveProgress();
       render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
+  function jumpTo(index) {
+    if (index < 0 || index >= state.currentQuiz.questions.length) return;
+    state.currentIndex = index;
+    state.showJumper = false;
+    saveProgress();
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleJumper() {
+    state.showJumper = !state.showJumper;
+    render();
+  }
+
   function showResults() {
+    localStorage.removeItem('qv_progress');
     navigateTo('results');
   }
 
@@ -670,7 +797,7 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
 
   function exitQuiz() {
     if (state.answers.some(a => a !== null)) {
-      if (!confirm('Exit quiz? Your progress will be lost.')) return;
+      if (!confirm('Exit quiz? Progress is saved — you can resume later.')) return;
     }
     state.currentQuiz = null;
     navigateTo('home');
@@ -811,6 +938,13 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
 
     setupDropZone();
     preloadBuiltinQuiz();
+
+    // Restore in-progress quiz if any
+    if (loadProgress()) {
+      state.view = 'quiz';
+      showToast('Resuming your quiz from where you left off!', 'info');
+    }
+
     render();
 
     // Show online status on load
@@ -835,6 +969,8 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     startQuiz,
     answer,
     next,
+    jumpTo,
+    toggleJumper,
     showResults,
     retryQuiz,
     exitQuiz,
@@ -842,6 +978,7 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     toggleShuffle,
     toggleExplanation,
     toggleExplanationVisible,
+    toggleTheme,
     exportAll,
     clearAll,
     copyPrompt,

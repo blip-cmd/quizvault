@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quizvault-v2';
+const CACHE_NAME = 'quizvault-v3';
 const ASSETS = [
   '/',
   '/index.html',

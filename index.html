@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="description" content="QuizVault — Practice quizzes on the go. Offline-first, mobile-first quiz app. Import any study material as JSON and test yourself anywhere.">
+  <meta name="theme-color" content="#6c5ce7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="QuizVault">
+  <title>QuizVault — Practice Quizzes Offline</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Main App Container -->
+  <div id="app"></div>
+
+  <!-- Import Modal -->
+  <div class="modal-overlay" id="import-modal">
+    <div class="modal">
+      <div class="modal__handle"></div>
+      <h2 class="modal__title">Import Quiz</h2>
+      <p class="modal__desc">Paste JSON from an AI prompt or drop a .json file. Use the Prompts tab for ready-made AI templates.</p>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="json" onclick="QuizVault.switchTab('json')">Paste JSON</button>
+        <button class="tab" data-tab="file" onclick="QuizVault.switchTab('file')">Upload File</button>
+      </div>
+
+      <div class="tab-content active" id="tab-json">
+        <div class="form-group">
+          <label class="form-label" for="json-input">Quiz JSON</label>
+          <textarea id="json-input" placeholder='{"title":"My Quiz","questions":[{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]}'></textarea>
+        </div>
+        <button class="btn btn--primary btn--full" onclick="QuizVault.importJSON()" id="btn-import-json">Import Quiz</button>
+      </div>
+
+      <div class="tab-content" id="tab-file">
+        <div class="drop-zone">
+          <div class="drop-zone__icon">📁</div>
+          <div class="drop-zone__text">Tap to select or drag a file</div>
+          <div class="drop-zone__hint">.json or .txt files</div>
+        </div>
+        <button class="btn btn--primary btn--full" onclick="QuizVault.importJSON()" id="btn-import-file">Import Quiz</button>
+      </div>
+
+      <button class="btn btn--secondary btn--full" style="margin-top:10px;" onclick="QuizVault.closeImport()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-item active" data-view="home" id="nav-home">
+      <span class="nav-item__icon">🏠</span>
+      <span class="nav-item__label">Library</span>
+    </button>
+    <button class="nav-item" data-view="prompts" id="nav-prompts">
+      <span class="nav-item__icon">✨</span>
+      <span class="nav-item__label">Prompts</span>
+    </button>
+    <button class="nav-item" data-view="settings" id="nav-settings">
+      <span class="nav-item__icon">⚙️</span>
+      <span class="nav-item__label">Settings</span>
+    </button>
+  </nav>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -11,10 +11,40 @@
     currentQuiz: null,
     currentIndex: 0,
     answers: [],
+    explanationVisible: [], // per-question toggle for "show explanation" button
     shuffleQuestions: JSON.parse(localStorage.getItem('qv_shuffle') || 'false'),
     showExplanation: JSON.parse(localStorage.getItem('qv_showExplanation') || 'true'),
     view: 'home', // home, quiz, results, prompts, settings
   };
+
+  // ==================== Preload Built-in Quiz ====================
+  const BUILTIN_QUIZ_ID = 'dcit405-mock2-builtin';
+  function preloadBuiltinQuiz() {
+    // Only preload if not already in library
+    if (state.quizzes.some(q => q.id === BUILTIN_QUIZ_ID)) return;
+    fetch('/quizzes/dcit405-mock2.json')
+      .then(r => r.json())
+      .then(data => {
+        const quiz = {
+          id: BUILTIN_QUIZ_ID,
+          title: data.title || 'DCIT405 — Mock Exam 2',
+          questions: data.questions.map(q => ({
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            explanation: q.explanation || '',
+          })),
+          attempts: 0,
+          bestScore: null,
+          createdAt: new Date().toISOString(),
+        };
+        state.quizzes.unshift(quiz);
+        saveQuizzes();
+        render();
+        showToast(`"${quiz.title}" loaded — ${quiz.questions.length} questions!`, 'success');
+      })
+      .catch(() => { /* offline or file not found — skip silently */ });
+  }
 
   // ==================== Toast System ====================
   function showToast(message, type = 'info', duration = 3000) {
@@ -196,14 +226,25 @@
       `;
     }).join('');
 
+    // Explanation logic: auto-show on wrong answer, button-reveal on correct
     let explanationHtml = '';
-    if (isAnswered && state.showExplanation && q.explanation) {
-      explanationHtml = `
-        <div class="explanation">
-          <div class="explanation__label">💡 Explanation</div>
-          <div class="explanation__text">${escapeHtml(q.explanation)}</div>
-        </div>
-      `;
+    if (isAnswered && q.explanation && state.showExplanation) {
+      const isCorrect = answered === q.correctIndex;
+      const isVisible = !isCorrect || state.explanationVisible[state.currentIndex];
+      if (isVisible) {
+        explanationHtml = `
+          <div class="explanation">
+            <div class="explanation__label">💡 Explanation</div>
+            <div class="explanation__text">${escapeHtml(q.explanation)}</div>
+          </div>
+        `;
+      } else {
+        explanationHtml = `
+          <div style="text-align:center;margin-bottom:16px;">
+            <button class="btn btn--secondary" onclick="QuizVault.toggleExplanationVisible()" id="btn-show-explanation">💡 Show Explanation</button>
+          </div>
+        `;
+      }
     }
 
     const isLast = state.currentIndex >= total - 1;
@@ -601,6 +642,7 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     };
     state.currentIndex = 0;
     state.answers = new Array(quiz.questions.length).fill(null);
+    state.explanationVisible = new Array(quiz.questions.length).fill(false);
     navigateTo('quiz');
   }
 
@@ -768,6 +810,7 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     });
 
     setupDropZone();
+    preloadBuiltinQuiz();
     render();
 
     // Show online status on load
@@ -775,6 +818,12 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
       showToast('You\'re offline — quizzes still work!', 'offline', 3000);
     }
   });
+
+  // ==================== Explanation Toggle ====================
+  function toggleExplanationVisible() {
+    state.explanationVisible[state.currentIndex] = true;
+    render();
+  }
 
   // ==================== Public API ====================
   window.QuizVault = {
@@ -792,6 +841,7 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
     deleteQuiz,
     toggleShuffle,
     toggleExplanation,
+    toggleExplanationVisible,
     exportAll,
     clearAll,
     copyPrompt,

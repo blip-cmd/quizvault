@@ -29,7 +29,7 @@
   }
   function toggleTheme() {
     state.theme = state.theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('qv_theme', state.theme);
+    safeStorageSet('qv_theme', state.theme);
     applyTheme();
     render();
   }
@@ -38,7 +38,7 @@
   // ==================== Progress Persistence ====================
   function saveProgress() {
     if (!state.currentQuiz) { localStorage.removeItem('qv_progress'); return; }
-    localStorage.setItem('qv_progress', JSON.stringify({
+    safeStorageSet('qv_progress', JSON.stringify({
       quizId: state.currentQuiz.id,
       currentIndex: state.currentIndex,
       answers: state.answers,
@@ -109,6 +109,18 @@
     }, duration);
   }
 
+  function safeStorageSet(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+        showToast('Storage full! Clear some quizzes in Settings to save new data.', 'error', 5000);
+      } else {
+        console.error('Local storage error:', e);
+      }
+    }
+  }
+
   // Online/Offline detection
   window.addEventListener('online', () => showToast('You\'re back online!', 'online'));
   window.addEventListener('offline', () => showToast('You\'re offline — quizzes still work!', 'offline', 4000));
@@ -171,7 +183,7 @@
   }
 
   function saveQuizzes() {
-    localStorage.setItem('qv_quizzes', JSON.stringify(state.quizzes));
+    safeStorageSet('qv_quizzes', JSON.stringify(state.quizzes));
   }
 
   // ==================== Rendering ====================
@@ -876,31 +888,31 @@ IMPORTANT: Output ONLY valid JSON, no markdown, no code fences.
   // ==================== Settings Actions ====================
   function toggleShuffle() {
     state.shuffleQuestions = !state.shuffleQuestions;
-    localStorage.setItem('qv_shuffle', JSON.stringify(state.shuffleQuestions));
+    safeStorageSet('qv_shuffle', JSON.stringify(state.shuffleQuestions));
     render();
   }
 
   function toggleShuffleAnswers() {
     state.shuffleAnswers = !state.shuffleAnswers;
-    localStorage.setItem('qv_shuffleAnswers', JSON.stringify(state.shuffleAnswers));
+    safeStorageSet('qv_shuffleAnswers', JSON.stringify(state.shuffleAnswers));
     render();
   }
 
   function updateApiKey(val) {
     state.aiApiKey = val.trim();
-    localStorage.setItem('qv_aiApiKey', state.aiApiKey);
+    safeStorageSet('qv_aiApiKey', state.aiApiKey);
     showToast('API Key saved securely.', 'success');
   }
 
   function updateAIPrompt(val) {
     state.customAIPrompt = val;
-    localStorage.setItem('qv_customAIPrompt', state.customAIPrompt);
+    safeStorageSet('qv_customAIPrompt', state.customAIPrompt);
     showToast('Prompt template updated.', 'success');
   }
 
   function toggleExplanation() {
     state.showExplanation = !state.showExplanation;
-    localStorage.setItem('qv_showExplanation', JSON.stringify(state.showExplanation));
+    safeStorageSet('qv_showExplanation', JSON.stringify(state.showExplanation));
     render();
   }
 

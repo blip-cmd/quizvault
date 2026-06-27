@@ -1,0 +1,225 @@
+{
+  "title": "DCIT428 (Quiz 3)",
+  "questions": [
+    {
+      "question": "A communication engineer wishes to transmit digital information using a radio signal while keeping the carrier frequency and phase unchanged. Which modulation technique best satisfies this requirement?",
+      "options": [
+        "FSK",
+        "ASK",
+        "BPSK",
+        "QPSK"
+      ],
+      "correctIndex": 1,
+      "explanation": "ASK (Amplitude Shift Keying). A sinusoidal carrier wave has three parameters that can be altered to carry data: amplitude, frequency, and phase. If the frequency and phase must remain unchanged, the information must be mapped exclusively onto the signal's amplitude."
+    },
+    {
+      "question": "A received signal experiences severe amplitude fading, but its frequency remains largely unaffected. Which modulation technique would be expected to perform best?",
+      "options": [
+        "ASK",
+        "FSK",
+        "OOK",
+        "AM"
+      ],
+      "correctIndex": 1,
+      "explanation": "FSK (Frequency Shift Keying) carries digital data through changes in frequency, leaving the amplitude constant. Since the channel degrades the amplitude but keeps the frequency stable, an FSK receiver can still track frequency shifts reliably despite the fading."
+    },
+    {
+      "question": "Which statement best explains why digital modulation is preferred over analogue modulation in modern wireless systems?",
+      "options": [
+        "Digital modulation eliminates interference.",
+        "Digital modulation requires no carrier signal.",
+        "Digital modulation represents information using discrete symbol states.",
+        "Digital modulation uses lower frequencies."
+      ],
+      "correctIndex": 2,
+      "explanation": "Digital modulation represents information using discrete symbol states. The defining difference between analog and digital modulation is that digital maps data onto a finite set of predefined states. Because the receiver only needs to determine which discrete state was sent, rather than tracking an infinitely variable wave, it gains superior noise immunity and error correction capabilities."
+    },
+    {
+      "question": "If a carrier's amplitude, frequency, and phase all remain unchanged, what information can be transmitted?",
+      "options": [
+        "Analogue information only",
+        "Encrypted information only",
+        "High-speed information only",
+        "No information can be conveyed"
+      ],
+      "correctIndex": 3,
+      "explanation": "No information can be conveyed. Information transmission requires a dynamic change in a physical system over time. If the carrier wave's amplitude, frequency, and phase are perfectly static, the signal carries no modulation payload and cannot transfer data."
+    },
+    {
+      "question": "A Binary ASK receiver decides whether a bit is a 0 or 1 primarily by measuring:",
+      "options": [
+        "Signal amplitude",
+        "Signal frequency",
+        "Signal phase",
+        "Signal bandwidth"
+      ],
+      "correctIndex": 0,
+      "explanation": "Signal amplitude. Binary ASK maps logical 0s and 1s to different amplitude levels of the carrier wave. The demodulator processes the received signal's envelope to measure its amplitude against a decision threshold to recover the bits."
+    },
+    {
+      "question": "Compared with ASK, what trade-off is typically made when using FSK?",
+      "options": [
+        "Sensitivity to amplitude noise",
+        "Increased bandwidth requirements",
+        "Inability to represent binary data",
+        "Requirement for variable amplitude"
+      ],
+      "correctIndex": 1,
+      "explanation": "Increased bandwidth requirements. Unlike ASK, which operates around a single carrier frequency, FSK requires shifting between distinct, separated frequencies to convey data. Spreading the signal power across multiple distinct spectral markers increases the total bandwidth required for transmission."
+    },
+    {
+      "question": "In BPSK, transmitting a binary 0 often corresponds to:",
+      "options": [
+        "Doubling the carrier frequency",
+        "A 180° phase reversal",
+        "Halving the amplitude",
+        "Eliminating the carrier"
+      ],
+      "correctIndex": 1,
+      "explanation": "A 180° phase reversal. Binary Phase Shift Keying utilizes two states that are 180° out of phase with each other to maximize geometric separation. Typically, a binary 1 follows the reference carrier phase (0°), while a binary 0 flips the phase completely (180°)."
+    },
+    {
+      "question": "Why is PSK generally more robust than ASK in wireless channels?",
+      "options": [
+        "PSK requires less power.",
+        "PSK uses more frequencies.",
+        "Information is encoded in phase rather than amplitude.",
+        "PSK eliminates fading."
+      ],
+      "correctIndex": 2,
+      "explanation": "Information is encoded in phase rather than amplitude. Wireless channels are highly vulnerable to thermal noise, atmospheric changes, and path obstacles that cause immediate fluctuations in signal amplitude. Because PSK relies entirely on the arrival phase of the wave rather than its height, it is highly resilient against random amplitude spikes."
+    },
+    {
+      "question": "Suppose a BPSK system transmits 1 Mbps. If it is replaced with QPSK while maintaining the same symbol rate, the theoretical throughput becomes:",
+      "options": [
+        "0.5 Mbps",
+        "1 Mbps",
+        "2 Mbps",
+        "4 Mbps"
+      ],
+      "correctIndex": 2,
+      "explanation": "2 Mbps. BPSK transmits 1 bit per symbol, meaning its symbol rate matches its bit rate. Moving to QPSK increases efficiency to 2 bits per symbol. Maintaining that same symbol rate doubles the throughput to 2 Mbps."
+    },
+    {
+      "question": "Which statement about constellation diagrams is TRUE?",
+      "options": [
+        "They represent symbols as points in the I-Q plane",
+        "They show only frequency information",
+        "They replace carrier waves entirely.",
+        "They eliminate symbol errors."
+      ],
+      "correctIndex": 0,
+      "explanation": "They represent symbols as points in the I-Q plane. A constellation diagram plots a modulation scheme's discrete symbols graphically. It uses the In-phase (I) axis as the real component and the Quadrature (Q) axis as the imaginary component to display both amplitude and phase simultaneously."
+    },
+    {
+      "question": "In a QPSK constellation, all points lie on a circle because:",
+      "options": [
+        "All symbols have equal amplitude.",
+        "All symbols have equal frequency.",
+        "The bandwidth is fixed.",
+        "The symbol rate is constant."
+      ],
+      "correctIndex": 0,
+      "explanation": "All symbols have equal amplitude. The distance from the origin to a point on a constellation diagram represents the peak amplitude of that symbol. Since QPSK shifts only the phase and keeps the signal amplitude constant across all four states, all points sit equidistant from the origin, forming a perfect circle."
+    },
+    {
+      "question": "The primary function of the I and Q axes is to:",
+      "options": [
+        "Represent bandwidth and power.",
+        "Represent amplitude and noise.",
+        "Describe a signal using two orthogonal components.",
+        "Measure symbol duration."
+      ],
+      "correctIndex": 2,
+      "explanation": "Describe a signal using two orthogonal components. The I (In-phase) and Q (Quadrature) axes represent two carrier components that are 90° out of phase with each other. Because they are orthogonal, they do not interfere with one another, allowing engineers to split a single complex modulation state into two independent, manageable vector coordinate values."
+    },
+    {
+      "question": "A wireless link transmits 1 million symbols per second using 16-QAM. What is the theoretical data rate?",
+      "options": [
+        "1 Mbps",
+        "2 Mbps",
+        "4 Mbps",
+        "16 Mbps"
+      ],
+      "correctIndex": 2,
+      "explanation": "4 Mbps. 16-QAM contains 16 distinct symbols. Since 2^4 = 16, each symbol carries exactly 4 bits of data. Multiplying the symbol rate (1 million symbols per second) by the bits per symbol (4) yields a data rate of 4 Mbps."
+    },
+    {
+      "question": "Compared with QPSK, 16-QAM primarily achieves higher throughput by:",
+      "options": [
+        "Increasing the number of available symbols.",
+        "Increasing carrier frequency.",
+        "Reducing symbol duration.",
+        "Eliminating phase modulation."
+      ],
+      "correctIndex": 0,
+      "explanation": "Increasing the number of available symbols. QPSK uses 4 symbol states (2 bits/symbol), whereas 16-QAM expands the system vocabulary to 16 symbol states (4 bits/symbol). By sending more bits with every single clock tick, the throughput goes up."
+    },
+    {
+      "question": "Two systems operate at the same symbol rate. One uses QPSK and the other uses 64-QAM. Both experience identical noise conditions. Which statement is most likely correct?",
+      "options": [
+        "Both experience the same symbol error probability.",
+        "Noise affects only the QPSK system.",
+        "The QPSK system is more likely to experience symbol errors.",
+        "The 64-QAM system is more likely to experience symbol errors."
+      ],
+      "correctIndex": 3,
+      "explanation": "The 64-QAM system is more likely to experience symbol errors. 64-QAM packs 64 points into the same operational power boundaries as QPSK's 4 points. This causes the individual decision boundaries for each state to be significantly smaller and closer together, making it much easier for a small amount of channel noise to push a symbol into an adjacent incorrect zone."
+    },
+    {
+      "question": "Which modulation scheme carries the greatest number of bits per symbol?",
+      "options": [
+        "BPSK",
+        "QPSK",
+        "64-QAM",
+        "256-QAM"
+      ],
+      "correctIndex": 3,
+      "explanation": "256-QAM. The number of bits per symbol is calculated via log2(M), where M is the order of modulation. For 256-QAM, log2(256) = 8 bits per symbol, which is higher than 64-QAM (6 bits), QPSK (2 bits), and BPSK (1 bit)."
+    },
+    {
+      "question": "A received constellation point is slightly displaced by noise but remains closest to the correct symbol. The receiver will most likely:",
+      "options": [
+        "Recover the correct symbol.",
+        "Declare a symbol error.",
+        "Increase transmit power.",
+        "Switch modulation schemes immediately."
+      ],
+      "correctIndex": 0,
+      "explanation": "Recover the correct symbol. Digital demodulators use maximum likelihood detection based on decision boundaries. As long as noise displacement does not cross a threshold to make the received vector look closer to a neighboring symbol state, the receiver maps it back to its nearest ideal point and decodes it without error."
+    },
+    {
+      "question": "Why do higher-order QAM constellations require cleaner channels?",
+      "options": [
+        "They use lower transmission power.",
+        "Their constellation points are more closely spaced.",
+        "Their frequencies are lower.",
+        "Their carrier waves are shorter."
+      ],
+      "correctIndex": 1,
+      "explanation": "Their constellation points are more closely spaced. High-order QAM profiles increase data capacity by packing more coordinate points into a fixed constellation field. Because the distance between adjacent symbols shrinks, even small amounts of background noise can alter the signal values enough to bridge boundaries, requiring a highly pristine, high-SNR channel to work reliably."
+    },
+    {
+      "question": "A mobile phone moves closer to a base station and channel quality improves significantly. Which adaptive modulation sequence is most likely?",
+      "options": [
+        "256-QAM → 64-QAM → 16-QAM → QPSK",
+        "QPSK → 16-QAM → 64-QAM → 256-QAM",
+        "BPSK → ASK → FSK → QPSK",
+        "FSK → ASK → BPSK → QPSK"
+      ],
+      "correctIndex": 1,
+      "explanation": "QPSK → 16-QAM → 64-QAM → 256-QAM. Adaptive Modulation and Coding (AMC) steps up to aggressive, high-order modulation schemes as channel conditions improve. Moving closer to the base station raises the Signal-to-Noise Ratio (SNR), allowing the system to scale smoothly from robust, lower-throughput options (QPSK) up to complex, high-speed profiles (256-QAM)."
+    },
+    {
+      "question": "Which statement best summarises the central trade-off discussed throughout the lecture?",
+      "options": [
+        "Higher frequencies always reduce errors.",
+        "Wider bandwidth always improves reliability.",
+        "Lower-order modulation always increases throughput.",
+        "Higher data rates generally require higher signal quality"
+      ],
+      "correctIndex": 3,
+      "explanation": "Higher data rates generally require higher signal quality. The overarching theme of modulation theory is the balancing act between speed and reliability. Moving to higher-order schemes pushes throughput up but sacrifices noise immunity, establishing the rule that higher data rates demand cleaner channels and stronger signal quality to stay viable."
+    }
+  ]
+}

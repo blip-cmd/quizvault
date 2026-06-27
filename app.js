@@ -69,7 +69,8 @@
     // ==================== Preload Built-in Quiz ====================
   const BUILTIN_QUIZZES = [
     { id: 'dcit405-mock2-builtin', file: '/quizzes/dcit405-mock2.json', defaultTitle: 'DCIT405 — Mock Exam 2' },
-    { id: 'dcit428-quiz3-builtin', file: '/quizzes/dcit428-quiz3.json', defaultTitle: 'Digital Modulation (Quiz 3)' }
+    { id: 'dcit428-quiz3-builtin', file: '/quizzes/dcit428-quiz3.json', defaultTitle: 'Digital Modulation (Quiz 3)' },
+    { id: 'dcit428-quiz2-builtin', file: '/quizzes/dcit428-quiz2.json', defaultTitle: 'Wireless Systems and Networks (Quiz 2)' }
   ];
 
   function preloadBuiltinQuiz() {

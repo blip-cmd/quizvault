@@ -1,0 +1,225 @@
+{
+  "title": "Wireless Systems and Networks (Quiz 2)",
+  "questions": [
+    {
+      "question": "A voice call is transmitted over a mobile network. Which of the following best represents the information being communicated?",
+      "options": [
+        "The spoken message itself",
+        "The radio frequency carrier",
+        "The transmitted signal",
+        "The wireless channel"
+      ],
+      "correctIndex": 0,
+      "explanation": "The spoken message itself. In the classic model of communication systems, the 'message' or 'information' represents the source data or intelligence that needs to be communicated. The radio frequency carrier and the transmitted signal act as physical vehicles, while the channel is merely the transmission medium. Therefore, the acoustic words spoken by the caller represent the actual raw information."
+    },
+    {
+      "question": "Which statement best explains the relationship between information and signals?",
+      "options": [
+        "Information and signals are identical concepts.",
+        "Signals are used to physically represent information.",
+        "Signals exist only in wireless systems.",
+        "Information is created by the receiver."
+      ],
+      "correctIndex": 1,
+      "explanation": "Signals are used to physically represent information. Information is abstract and cannot travel over physical space on its own. A signal (such as an electromagnetic wave, electrical current, or optical pulse) serves as the physical carrier. By modifying the physical parameters of the signal, we represent and transport the underlying information."
+    },
+    {
+      "question": "A communication engineer is selecting a representation for binary data. Which characteristic makes digital signals attractive for modern communication systems?",
+      "options": [
+        "They completely eliminate noise.",
+        "They require no bandwidth.",
+        "They support error detection and correction techniques.",
+        "They do not require modulation."
+      ],
+      "correctIndex": 2,
+      "explanation": "They support error detection and correction techniques. Because digital signals map discrete states (namely binary 0s and 1s), mathematical algorithms can easily check the integrity of the data stream. Extra data, including cyclic redundancy check (CRC) bits or forward error correction (FEC) blocks, can be added to the payload to enable receivers to identify and correct errors caused by channel noise."
+    },
+    {
+      "question": "A wireless system transmits one bit every 1 ms. What is the corresponding bit rate?",
+      "options": [
+        "1 bps",
+        "100 bps",
+        "1000 bps",
+        "10000 bps"
+      ],
+      "correctIndex": 2,
+      "explanation": "1000 bps. Bit rate (R) is the mathematical inverse of the duration of a single bit (T): R = 1/T = 1 / 1ms = 1000 bps."
+    },
+    {
+      "question": "Why must information be modulated before wireless transmission?",
+      "options": [
+        "To eliminate path loss",
+        "To increase entropy",
+        "To improve BER automatically",
+        "To place information onto a carrier suitable for transmission"
+      ],
+      "correctIndex": 3,
+      "explanation": "To place information onto a carrier suitable for transmission. Baseband information signals such as voice operate at low frequencies. Sending low-frequency signals wirelessly is highly inefficient and requires massive, physically impractical antennas. Modulation superimposes the baseband signal onto a high-frequency carrier wave to match the propagation properties of the medium and allow the use of small, consumer-friendly antennas."
+    },
+    {
+      "question": "Two wireless systems operate at 1 GHz and 2 GHz respectively. Compared with the 1 GHz system, the 2 GHz system will have:",
+      "options": [
+        "A shorter wavelength",
+        "A longer wavelength",
+        "The same wavelength",
+        "Double the signal power"
+      ],
+      "correctIndex": 0,
+      "explanation": "A shorter wavelength. Wavelength (λ) and frequency (f) are inversely proportional to one another, governed by the wave equation c = f * λ (where c is the speed of propagation). Because the speed of electromagnetic waves in a given medium is constant, doubling the operating frequency from 1 GHz to 2 GHz halves the physical wavelength."
+    },
+    {
+      "question": "The wavelength of a radio signal operating at 900 MHz is closest to:",
+      "options": [
+        "0.11 m",
+        "0.33 m",
+        "0.66 m",
+        "1.00 m"
+      ],
+      "correctIndex": 1,
+      "explanation": "0.33 m. Using the wave equation λ = c / f, where c is the speed of light (approx 3 * 10^8 m/s) and f is 900 MHz (900 * 10^6 Hz): λ = (3 * 10^8) / (900 * 10^6) = 3/9 = 0.33 m."
+    },
+    {
+      "question": "Which engineering consequence is most commonly associated with increasing operating frequency?",
+      "options": [
+        "Larger antennas",
+        "Elimination of path loss",
+        "Smaller antennas",
+        "Lower bit rates"
+      ],
+      "correctIndex": 2,
+      "explanation": "Smaller antennas. Resonant antenna length is directly proportional to signal wavelength. Typical antenna designs utilize lengths of λ/2 or λ/4. Because higher operating frequencies result in shorter physical wavelengths, the geometric dimensions required for the antennas decrease."
+    },
+    {
+      "question": "Which statement best describes a wireless channel?",
+      "options": [
+        "A technique used to modulate information",
+        "A mathematical measure of information",
+        "The medium or environment through which signals travel",
+        "A source of communication errors"
+      ],
+      "correctIndex": 2,
+      "explanation": "The medium or environment through which signals travel. A communication channel is the physical medium that links the transmitter and the receiver. For wired communication, this might be copper cabling or fiber-optic lines. For wireless communication, the channel is the atmosphere, open air, or free space through which radio waves propagate."
+    },
+    {
+      "question": "A receiver is moved from d to 3d away from a transmitter. Assuming free-space propagation, the received power becomes approximately:",
+      "options": [
+        "One-third of its original value",
+        "One-sixth of its original value",
+        "One-eighth of its original value",
+        "One-ninth of its original value"
+      ],
+      "correctIndex": 3,
+      "explanation": "One-ninth of its original value. In free space, signal propagation obeys the inverse-square law. Received power decreases as the square of the distance increases (Pr ∝ 1/d^2). The distance increases from d to 3d, which represents a scaling factor of 3. Consequently, the received power is scaled by 1/3^2 = 1/9."
+    },
+    {
+      "question": "Which of the following situations would most likely increase path loss?",
+      "options": [
+        "Increasing the distance between transmitter and receiver",
+        "Increasing throughput",
+        "Reducing BER",
+        "Using digital communication"
+      ],
+      "correctIndex": 0,
+      "explanation": "Increasing the distance between transmitter and receiver. Path loss is the physical attenuation of an electromagnetic wave as it radiates through space. As distance increases, the signal energy spreads over a larger physical sphere, reducing its power density. System performance parameters such as throughput, bit error rate, or signal type have no physical influence on path loss."
+    },
+    {
+      "question": "Which statement best distinguishes throughput from bit rate?",
+      "options": [
+        "Throughput measures signal strength.",
+        "Throughput measures useful data successfully delivered.",
+        "Throughput measures frequency.",
+        "Throughput measures wavelength."
+      ],
+      "correctIndex": 1,
+      "explanation": "Throughput measures useful data successfully delivered. Bit rate refers to the physical transmission speed of raw bits across a link, including all control headers, trailers, and error correction overhead. Throughput is an application-level metric that measures the net rate of error-free payload data successfully processed and delivered to the destination user."
+    },
+    {
+      "question": "A Wi-Fi router advertises a data rate of 54 Mbps, but users observe only 20 Mbps. Which factor is most likely responsible?",
+      "options": [
+        "Path loss alone",
+        "Carrier frequency",
+        "Protocol overhead and retransmissions",
+        "Wavelength changes"
+      ],
+      "correctIndex": 2,
+      "explanation": "Protocol overhead and retransmissions. The advertised 54 Mbps is the physical layer (PHY) rate. It represents the maximum capacity of raw bits passing through the air. Actual throughput is lower because network protocols add packaging overhead (TCP/IP headers, security encryption, and acknowledgments). Additionally, environmental noise causes packet collisions, prompting retransmissions that consume usable bandwidth."
+    },
+    {
+      "question": "A university wireless network becomes heavily congested during course registration. What is the most likely effect on individual users?",
+      "options": [
+        "Increased throughput",
+        "Reduced path loss",
+        "Reduced wavelength",
+        "Reduced throughput"
+      ],
+      "correctIndex": 3,
+      "explanation": "Reduced throughput. High user congestion creates competition for shared airtime. This increases packet collisions and forces devices to wait in queues or schedule retransmissions. These delays and repeated transmissions reduce the effective, error-free data rate (throughput) experienced by each individual user."
+    },
+    {
+      "question": "During transmission, a bit value changes from 0 to 1 before reaching the receiver. This is an example of:",
+      "options": [
+        "A communication error",
+        "Modulation",
+        "Throughput reduction",
+        "Entropy"
+      ],
+      "correctIndex": 0,
+      "explanation": "A communication error. In digital logic systems, data is stored and read as binary states. When physical noise, interference, or signal degradation alters a signal so that a 0 is read as a 1 (or vice versa), this constitutes a bit error."
+    },
+    {
+      "question": "A communication system transmits 10,000 bits and receives 10 bits incorrectly. What is the BER?",
+      "options": [
+        "10^-2",
+        "10^-3",
+        "10^-4",
+        "10^-5"
+      ],
+      "correctIndex": 1,
+      "explanation": "10^-3. The Bit Error Rate (BER) is the ratio of incorrectly received bits to the total number of transmitted bits: BER = 10 / 10000 = 10^-3."
+    },
+    {
+      "question": "Which of the following BER values indicates the most reliable communication link?",
+      "options": [
+        "10^-1",
+        "10^-2",
+        "10^-4",
+        "10^-6"
+      ],
+      "correctIndex": 3,
+      "explanation": "10^-6. The smaller the BER value, the lower the probability of encountering an error during transmission. Comparing the exponents, 10^-6 (one error in one million bits) is a significantly lower error rate than 10^-1 (one error in ten bits), indicating the most reliable communication link."
+    },
+    {
+      "question": "A wireless system automatically reduces its transmission speed when channel conditions deteriorate. The primary objective is to:",
+      "options": [
+        "Increase wavelength",
+        "Increase entropy",
+        "Increase path loss",
+        "Maintain communication reliability"
+      ],
+      "correctIndex": 3,
+      "explanation": "Maintain communication reliability. This technique is known as link adaptation. When channel quality drops, high-speed modulation schemes become highly vulnerable to noise, leading to an elevated BER. Switching to a slower, more robust modulation scheme reduces speed, but it ensures that the receiver can still decode the signal without losing the connection entirely."
+    },
+    {
+      "question": "Which application would typically place the highest priority on reliability rather than maximum throughput?",
+      "options": [
+        "Downloading a movie",
+        "Emergency communication systems",
+        "Streaming music",
+        "Social media browsing"
+      ],
+      "correctIndex": 1,
+      "explanation": "Emergency communication systems. Emergency networks typically transmit very simple, short messages. These messages are critical for saving lives, meaning they must get through on the first attempt under severe noise or structural damage. Commercial entertainment applications prioritize high throughput for smooth media playback and can easily tolerate short buffering phases or retransmissions."
+    },
+    {
+      "question": "Shannon's channel capacity concept implies that:",
+      "options": [
+        "BER can always be reduced to zero.",
+        "Throughput and bit rate are always identical.",
+        "Increasing frequency guarantees unlimited capacity.",
+        "Every communication channel has a maximum reliable transmission rate."
+      ],
+      "correctIndex": 3,
+      "explanation": "Every communication channel has a maximum reliable transmission rate. Shannon's channel capacity theorem defines a strict mathematical upper bound for error-free transmission over a physical link. This limit is determined by the channel bandwidth (B) and the signal-to-noise ratio (SNR): C = B * log2(1 + SNR). If a system attempts to transmit at a rate greater than C, error-free communication becomes physically impossible, regardless of the coding techniques utilized."
+    }
+  ]
+}

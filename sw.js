@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quizvault-v3';
+const CACHE_NAME = 'quizvault-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   '/app.js',
   '/manifest.json',
   '/quizzes/dcit405-mock2.json',
+  '/quizzes/dcit428-quiz3.json',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
 ];
 

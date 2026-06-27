@@ -66,33 +66,43 @@
     } catch { localStorage.removeItem('qv_progress'); return false; }
   }
 
-  // ==================== Preload Built-in Quiz ====================
-  const BUILTIN_QUIZ_ID = 'dcit405-mock2-builtin';
+    // ==================== Preload Built-in Quiz ====================
+  const BUILTIN_QUIZZES = [
+    { id: 'dcit405-mock2-builtin', file: '/quizzes/dcit405-mock2.json', defaultTitle: 'DCIT405 — Mock Exam 2' },
+    { id: 'dcit428-quiz3-builtin', file: '/quizzes/dcit428-quiz3.json', defaultTitle: 'Digital Modulation (Quiz 3)' }
+  ];
+
   function preloadBuiltinQuiz() {
-    // Only preload if not already in library
-    if (state.quizzes.some(q => q.id === BUILTIN_QUIZ_ID)) return;
-    fetch('/quizzes/dcit405-mock2.json')
-      .then(r => r.json())
-      .then(data => {
-        const quiz = {
-          id: BUILTIN_QUIZ_ID,
-          title: data.title || 'DCIT405 — Mock Exam 2',
-          questions: data.questions.map(q => ({
-            question: q.question,
-            options: q.options,
-            correctIndex: q.correctIndex,
-            explanation: q.explanation || '',
-          })),
-          attempts: 0,
-          bestScore: null,
-          createdAt: new Date().toISOString(),
-        };
-        state.quizzes.unshift(quiz);
-        saveQuizzes();
-        render();
-        showToast(`"${quiz.title}" loaded — ${quiz.questions.length} questions!`, 'success');
-      })
-      .catch(() => { /* offline or file not found — skip silently */ });
+    BUILTIN_QUIZZES.forEach(item => {
+      if (state.quizzes.some(q => q.id === item.id)) return;
+      fetch(item.file)
+        .then(r => r.json())
+        .then(data => {
+          const quiz = {
+            id: item.id,
+            title: data.title || item.defaultTitle,
+            questions: data.questions.map(q => ({
+              question: q.question,
+              options: q.options,
+              correctIndex: q.correctIndex,
+              explanation: q.explanation || '',
+            })),
+            attempts: 0,
+            bestScore: null,
+            createdAt: new Date().toISOString(),
+          };
+          // Put mock2 at the top, quiz3 after it
+          if (item.id === 'dcit405-mock2-builtin') {
+            state.quizzes.unshift(quiz);
+          } else {
+            state.quizzes.push(quiz);
+          }
+          saveQuizzes();
+          render();
+          showToast('"' + quiz.title + '" loaded!', 'success');
+        })
+        .catch(err => { console.error('Failed to preload:', item.file, err); });
+    });
   }
 
   // ==================== Toast System ====================

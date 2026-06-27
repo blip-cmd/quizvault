@@ -1,0 +1,225 @@
+{
+  "title": "Wireless Communication Foundations (Quiz 1)",
+  "questions": [
+    {
+      "question": "Which of the following personalities was a pioneer of wireless communication?",
+      "options": [
+        "Alan Turing",
+        "George Boole",
+        "Guglielmo Marconi",
+        "Richard Hamming"
+      ],
+      "correctIndex": 2,
+      "explanation": "Guglielmo Marconi. Guglielmo Marconi was an Italian inventor and electrical engineer widely recognized for his pioneering work on long-distance radio transmission. He developed the first practical radio telegraph system, laying the absolute foundation for modern wireless communication systems."
+    },
+    {
+      "question": "Which of the following best describes wireless communication?",
+      "options": [
+        "Transmission of information without a physical connection between sender and receiver",
+        "Transmission of information through fibre-optic cables",
+        "Communication using only copper conductors",
+        "Communication using printed documents"
+      ],
+      "correctIndex": 0,
+      "explanation": "Transmission of information without a physical connection between sender and receiver. Wireless communication relies on electromagnetic waves (such as radio waves, microwaves, or infrared) to transmit data through the air, eliminating the need for physical cables or guided wires between devices."
+    },
+    {
+      "question": "Which of the following is an example of a wireless technology commonly used in homes and offices?",
+      "options": [
+        "DSL",
+        "Wi-Fi",
+        "Fibre Ethernet",
+        "Coaxial Ethernet"
+      ],
+      "correctIndex": 1,
+      "explanation": "Wi-Fi. Wi-Fi is the standard wireless local area networking technology used to connect devices such as laptops, smartphones, and smart TVs to the internet and to each other within local areas like homes and offices."
+    },
+    {
+      "question": "What is the primary advantage of wireless communication over wired communication?",
+      "options": [
+        "Unlimited bandwidth",
+        "User mobility and flexibility",
+        "Zero interference",
+        "No need for network equipment"
+      ],
+      "correctIndex": 1,
+      "explanation": "User mobility and flexibility. The defining advantage of wireless communication is that it untethers the user from a fixed physical location. Devices can connect seamlessly to the network while moving freely within the coverage area."
+    },
+    {
+      "question": "In the communication chain Source -> Transmitter -> Channel -> Receiver -> Destination, which component carries the signal between the transmitter and receiver?",
+      "options": [
+        "Source",
+        "Destination",
+        "Channel",
+        "Decoder"
+      ],
+      "correctIndex": 2,
+      "explanation": "Channel. The channel represents the physical or unguided transmission medium over which the signal travels from the transmitter to the receiver. In wireless networks, this medium is the open air."
+    },
+    {
+      "question": "Wireless communication relies primarily on which type of wave?",
+      "options": [
+        "Sound waves",
+        "Water waves",
+        "Electromagnetic waves",
+        "Seismic waves"
+      ],
+      "correctIndex": 2,
+      "explanation": "Electromagnetic waves. Wireless technologies such as Wi-Fi, Bluetooth, and cellular networks use electromagnetic waves, especially radio waves and microwaves, to transmit information through the air without physical wires."
+    },
+    {
+      "question": "Frequency is defined as:",
+      "options": [
+        "The distance a signal travels",
+        "The number of waveform cycles per second",
+        "The power of a transmitter",
+        "The width of a communication channel"
+      ],
+      "correctIndex": 1,
+      "explanation": "The number of waveform cycles per second. Frequency measures how often a periodic wave repeats its cycle within a given timeframe, typically one second. It is measured in Hertz, where one Hertz equals one full cycle per second."
+    },
+    {
+      "question": "What is meant by bandwidth in a communication system?",
+      "options": [
+        "The width of a network cable",
+        "The maximum transmission distance",
+        "The range of frequencies occupied by a signal",
+        "The number of connected users"
+      ],
+      "correctIndex": 2,
+      "explanation": "The range of frequencies occupied by a signal. In telecommunications, bandwidth represents the difference between the highest and lowest frequencies in a continuous band of data transmission. It determines the raw information-carrying capacity of the channel."
+    },
+    {
+      "question": "Which wireless technology is specifically designed for short-range personal area communication?",
+      "options": [
+        "Cellular networks",
+        "Satellite communication",
+        "Bluetooth",
+        "Microwave links"
+      ],
+      "correctIndex": 2,
+      "explanation": "Bluetooth. Bluetooth is explicitly designed for Wireless Personal Area Networks. It operates efficiently over short distances, typically under 10 meters, to connect personal devices like headphones, mice, and smartphones."
+    },
+    {
+      "question": "Which cellular generation introduced broadband mobile data services?",
+      "options": [
+        "1G",
+        "2G",
+        "3G",
+        "4G"
+      ],
+      "correctIndex": 2,
+      "explanation": "3G. The third generation of cellular networks introduced mobile broadband services. It offered significantly higher data transfer rates, making real-time web browsing, video calling, and mobile internet practical."
+    },
+    {
+      "question": "Which part of the electromagnetic spectrum is most commonly used for wireless communication?",
+      "options": [
+        "Gamma rays",
+        "X-rays",
+        "Radio frequencies",
+        "Infrared only"
+      ],
+      "correctIndex": 2,
+      "explanation": "Radio frequencies. The radio frequency portion of the electromagnetic spectrum, spanning from roughly 3 kilohertz to 300 gigahertz, is the backbone of modern wireless networks. These waves can travel long distances and safely penetrate obstacles like walls."
+    },
+    {
+      "question": "The primary role of a transmitter is to:",
+      "options": [
+        "Recover transmitted information",
+        "Convert information into a signal suitable for transmission",
+        "Store network data",
+        "Measure signal strength"
+      ],
+      "correctIndex": 1,
+      "explanation": "Convert information into a signal suitable for transmission. A transmitter takes the original source data and processes it using encoding and modulation techniques into an electromagnetic signal optimized for traveling across the channel."
+    },
+    {
+      "question": "The main purpose of an antenna is to:",
+      "options": [
+        "Encrypt wireless traffic",
+        "Store transmitted information",
+        "Convert electrical signals into electromagnetic waves and vice versa",
+        "Allocate IP addresses"
+      ],
+      "correctIndex": 2,
+      "explanation": "Convert electrical signals into electromagnetic waves and vice versa. An antenna functions as a transducer. During transmission, it converts alternating electrical currents from the device into radio waves in free space. During reception, it converts captured radio waves back into electrical currents."
+    },
+    {
+      "question": "What is the primary function of a cellular base station?",
+      "options": [
+        "To manufacture mobile phones",
+        "To provide wireless connectivity to users within a coverage area",
+        "To store user passwords",
+        "To replace the core network"
+      ],
+      "correctIndex": 1,
+      "explanation": "To provide wireless connectivity to users within a coverage area. A cellular base station, often placed on a tower, serves as the local bridge between mobile devices and the core network infrastructure. It broadcasts radio signals to create a geographic cell of wireless coverage."
+    },
+    {
+      "question": "Which of the following is an example of an Internet of Things (IoT) device?",
+      "options": [
+        "Fibre-optic cable",
+        "Smart thermostat",
+        "Ethernet switch",
+        "Patch panel"
+      ],
+      "correctIndex": 1,
+      "explanation": "Smart thermostat. An IoT device is an embedded system equipped with sensors, software, and network connectivity that allows it to collect and exchange data. A smart thermostat perfectly exemplifies this by tracking temperature habits and allowing remote app control."
+    },
+    {
+      "question": "Why is wireless communication generally more challenging than wired communication?",
+      "options": [
+        "Wireless devices are always more expensive",
+        "Wireless communication cannot support mobility",
+        "The transmission medium is shared and affected by environmental conditions",
+        "Wireless systems require fewer design considerations"
+      ],
+      "correctIndex": 2,
+      "explanation": "The transmission medium is shared and affected by environmental conditions. Unlike wired networks, where signals are isolated within a cable, wireless signals travel through the unguided medium of open air. Multiple devices must share the same physical space, making the network prone to interference, multipath fading, and attenuation from environmental barriers."
+    },
+    {
+      "question": "The process of transferring an active connection from one cell to another is known as:",
+      "options": [
+        "Multiplexing",
+        "Handover",
+        "Encoding",
+        "Compression"
+      ],
+      "correctIndex": 1,
+      "explanation": "Handover. A handover occurs when a cellular network automatically transfers an ongoing voice or data session from one base station cell coverage area to another as the user moves, ensuring continuous, uninterrupted service."
+    },
+    {
+      "question": "Signal-to-Noise Ratio (SNR) is a measure of:",
+      "options": [
+        "The number of users in a network",
+        "The operating frequency of a transmitter",
+        "The strength of the desired signal relative to noise",
+        "The physical size of an antenna"
+      ],
+      "correctIndex": 2,
+      "explanation": "The strength of the desired signal relative to noise. Signal to Noise Ratio is a fundamental engineering metric that compares the level of a desired, meaningful signal to the level of background noise. Higher ratios indicate a cleaner, higher quality connection with fewer errors."
+    },
+    {
+      "question": "Coverage in a wireless network refers to:",
+      "options": [
+        "The geographical area where service is available",
+        "The maximum achievable data rate",
+        "The number of connected users",
+        "The level of security provided"
+      ],
+      "correctIndex": 0,
+      "explanation": "The geographical area where service is available. Coverage defines the physical or geographic region within which a wireless system base station or access point can broadcast a signal strong enough for user devices to establish a reliable connection."
+    },
+    {
+      "question": "Which security threat involves secretly listening to wireless communications?",
+      "options": [
+        "Eavesdropping",
+        "Handover",
+        "Multiplexing",
+        "Modulation"
+      ],
+      "correctIndex": 0,
+      "explanation": "Eavesdropping. Eavesdropping is a passive security threat where an unauthorized entity intercepts and monitors unencrypted data packets transmitted over the air. Since wireless signals radiate openly, any nearby receiver can pick them up if countermeasures are not active."
+    }
+  ]
+}
